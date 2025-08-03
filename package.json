@@ -124,11 +124,11 @@
     }
   },
   "prettier": {
-    "quoteProps": "consistent",
+    "arrowParens": "avoid",
+    "bracketSameLine": true,
+    "bracketSpacing": false,
     "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
+    "trailingComma": "all"
   },
   "react-native-builder-bob": {
     "source": "src",
@@ -151,10 +151,7 @@
   "codegenConfig": {
     "name": "HapticsSpec",
     "type": "modules",
-    "jsSrcsDir": "src",
-    "android": {
-      "javaPackageName": "com.haptics"
-    }
+    "jsSrcsDir": "src"
   },
   "create-react-native-library": {
     "languages": "kotlin-objc",
