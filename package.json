@@ -2,16 +2,9 @@
   "name": "react-native-haptics",
   "version": "0.1.0",
   "description": "A high-performance React Native library for iOS haptics and Android vibration effects",
-  "main": "./lib/module/index.js",
-  "types": "./lib/typescript/src/index.d.ts",
-  "exports": {
-    ".": {
-      "source": "./src/index.tsx",
-      "types": "./lib/typescript/src/index.d.ts",
-      "default": "./lib/module/index.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "types": "./lib/typescript/module/src/index.d.ts",
   "files": [
     "src",
     "lib",
@@ -43,7 +36,20 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "react-native-haptics",
+    "haptics",
+    "vibration",
+    "haptic-feedback",
+    "vibration-effects",
+    "haptic-feedback-ios",
+    "react-native-haptic",
+    "haptic-feedback-android",
+    "react-native-haptics-ios",
+    "react-native-haptics-android",
+    "react-native-vibration",
+    "react-native-vibration-effects",
+    "react-native-haptic-feedback"
   ],
   "repository": {
     "type": "git",
