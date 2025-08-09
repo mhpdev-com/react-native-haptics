@@ -6,15 +6,17 @@ import NativeHaptics, {
 import {Platform} from 'react-native';
 
 /**
- * Triggers haptic feedback based on the provided impact style.
- * @param style The type of impact feedback to trigger.
+ * Triggers an impact haptic feedback.
+ * Corresponds to `UIImpactFeedbackGenerator` on iOS.
+ * @param style The intensity of the impact feedback.
  * @returns A promise that resolves when the haptic feedback is completed.
  */
 const impact = async (style: ImpactFeedback) => {
   await NativeHaptics.impact(style);
 };
 /**
- * Triggers haptic feedback based on the provided notification type.
+ * Triggers a notification haptic feedback to communicate success, warning, or error.
+ * Corresponds to `UINotificationFeedbackGenerator` on iOS.
  * @param type The type of notification feedback to trigger.
  * @returns A promise that resolves when the haptic feedback is completed.
  */
@@ -22,8 +24,9 @@ const notification = async (type: NotificationFeedback) => {
   await NativeHaptics.notification(type);
 };
 /**
- * Triggers haptic feedback based on the provided selection feedback type.
+ * Triggers a platform-specific haptic feedback on Android.
  * @platform android
+ * @param type The Android-specific haptic feedback constant to use.
  * @returns A promise that resolves when the haptic feedback is completed.
  */
 const androidHaptics = async (type: AndroidHapticsFeedback) => {
@@ -33,12 +36,15 @@ const androidHaptics = async (type: AndroidHapticsFeedback) => {
   await NativeHaptics.androidHaptics(type);
 };
 /**
- * Triggers haptic feedback based on the provided selection feedback type.
+ * Triggers a haptic feedback to indicate a selection change.
+ * Corresponds to `UISelectionFeedbackGenerator` on iOS.
  * @returns A promise that resolves when the haptic feedback is completed.
  */
 const selection = async () => {
   await NativeHaptics.selection();
 };
+
+export type {ImpactFeedback, NotificationFeedback, AndroidHapticsFeedback};
 
 const Haptics = {impact, notification, androidHaptics, selection};
 export default Haptics;
