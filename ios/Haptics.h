@@ -7,6 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UISelectionFeedbackGenerator *selectionGenerator;
 @property (nonatomic, strong) UINotificationFeedbackGenerator *notificationGenerator;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, UIImpactFeedbackGenerator *> *impactGenerators;
 
 @property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *impactStyles;
 @property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *notificationTypes;

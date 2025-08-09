@@ -13,26 +13,29 @@ RCT_EXPORT_MODULE()
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
-        _notificationGenerator = [UINotificationFeedbackGenerator new];
-        [_notificationGenerator prepare];
-        
-        _selectionGenerator = [UISelectionFeedbackGenerator new];
-        [_selectionGenerator prepare];
-        
-        _impactStyles = @{
-            @"light": @(UIImpactFeedbackStyleLight),
-            @"medium": @(UIImpactFeedbackStyleMedium),
-            @"heavy": @(UIImpactFeedbackStyleHeavy),
-            @"soft": @(UIImpactFeedbackStyleSoft),
-            @"rigid": @(UIImpactFeedbackStyleRigid)
-        };
 
-        _notificationTypes = @{
-            @"success": @(UINotificationFeedbackTypeSuccess),
-            @"warning": @(UINotificationFeedbackTypeWarning),
-            @"error": @(UINotificationFeedbackTypeError)
-        };
+    if (self) {
+      _notificationGenerator = [UINotificationFeedbackGenerator new];
+      [_notificationGenerator prepare];
+      
+      _selectionGenerator = [UISelectionFeedbackGenerator new];
+      [_selectionGenerator prepare];
+      
+      _impactGenerators = [NSMutableDictionary new];
+
+      _impactStyles = @{
+          @"light": @(UIImpactFeedbackStyleLight),
+          @"medium": @(UIImpactFeedbackStyleMedium),
+          @"heavy": @(UIImpactFeedbackStyleHeavy),
+          @"soft": @(UIImpactFeedbackStyleSoft),
+          @"rigid": @(UIImpactFeedbackStyleRigid)
+      };
+
+      _notificationTypes = @{
+          @"success": @(UINotificationFeedbackTypeSuccess),
+          @"warning": @(UINotificationFeedbackTypeWarning),
+          @"error": @(UINotificationFeedbackTypeError)
+      };
     }
     return self;
 }
@@ -47,11 +50,15 @@ RCT_EXPORT_MODULE()
     reject(@"E_INVALID_STYLE", [NSString stringWithFormat:@"Invalid impact style '%@'", style], nil);
     return;
   }
-  UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc]
-                                          initWithStyle:(UIImpactFeedbackStyle)styleValue.integerValue];
-  [generator prepare];
-  [generator impactOccurred];
+  UIImpactFeedbackGenerator *generator = self.impactGenerators[style];
 
+  if (!generator) {
+    generator = [[UIImpactFeedbackGenerator alloc]
+                 initWithStyle:(UIImpactFeedbackStyle)styleValue.integerValue];
+    [generator prepare];
+    self.impactGenerators[style] = generator;
+  }
+  [generator impactOccurred];
   resolve(nil);
 }
 
@@ -71,7 +78,6 @@ RCT_EXPORT_MODULE()
 
 - (void)selection:(nonnull RCTPromiseResolveBlock)resolve
         reject:(nonnull RCTPromiseRejectBlock)reject {
-  [self.selectionGenerator prepare];
   [self.selectionGenerator selectionChanged];
   resolve(nil);
 }
