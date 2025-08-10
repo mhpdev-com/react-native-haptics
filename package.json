@@ -1,6 +1,6 @@
 {
   "name": "@mhpdev/react-native-haptics",
-  "version": "0.1.0",
+  "version": "1.0.0-beta",
   "description": "A high-performance React Native library for iOS haptics and Android vibration effects",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
