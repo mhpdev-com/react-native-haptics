@@ -9,6 +9,7 @@
   "files": [
     "src",
     "lib",
+    "jest",
     "android",
     "ios",
     "cpp",
