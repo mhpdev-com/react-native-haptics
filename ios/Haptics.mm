@@ -1,5 +1,12 @@
 #import "Haptics.h"
-#import <React/RCTLog.h>
+
+static inline void runOnMainThread(dispatch_block_t block) {
+  if ([NSThread isMainThread]) {
+    block();
+  } else {
+    dispatch_async(dispatch_get_main_queue(), block);
+  }
+}
 
 @implementation Haptics
 
@@ -45,20 +52,21 @@ RCT_EXPORT_MODULE()
         reject:(nonnull RCTPromiseRejectBlock)reject
 {
   NSNumber *styleValue = self.impactStyles[style];
-
+ 
   if (!styleValue) {
     reject(@"E_INVALID_STYLE", [NSString stringWithFormat:@"Invalid impact style '%@'", style], nil);
     return;
   }
-  UIImpactFeedbackGenerator *generator = self.impactGenerators[style];
+  runOnMainThread(^{
+    UIImpactFeedbackGenerator *generator = self.impactGenerators[style];
 
-  if (!generator) {
-    generator = [[UIImpactFeedbackGenerator alloc]
-                 initWithStyle:(UIImpactFeedbackStyle)styleValue.integerValue];
-    [generator prepare];
-    self.impactGenerators[style] = generator;
-  }
-  [generator impactOccurred];
+    if (!generator) {
+      generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:(UIImpactFeedbackStyle)styleValue.integerValue];
+      [generator prepare];
+      self.impactGenerators[style] = generator;
+    }
+    [generator impactOccurred];
+  });
   resolve(nil);
 }
 
@@ -72,13 +80,17 @@ RCT_EXPORT_MODULE()
     reject(@"E_INVALID_TYPE", [NSString stringWithFormat:@"Invalid notification type '%@'", type], nil);
     return;
   }
-  [self.notificationGenerator notificationOccurred:(UINotificationFeedbackType)typeValue.integerValue];
+  runOnMainThread(^{
+    [self.notificationGenerator notificationOccurred:(UINotificationFeedbackType)typeValue.integerValue];
+  });
   resolve(nil);
 }
 
 - (void)selection:(nonnull RCTPromiseResolveBlock)resolve
         reject:(nonnull RCTPromiseRejectBlock)reject {
-  [self.selectionGenerator selectionChanged];
+  runOnMainThread(^{
+    [self.selectionGenerator selectionChanged];
+  });
   resolve(nil);
 }
 

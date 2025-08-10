@@ -28,57 +28,60 @@ class HapticsModule(reactContext: ReactApplicationContext) :
     return NAME
   }
 
-  override fun impact(style: String, promise: Promise) {
+  private fun runOnUiQueueThread(block: () -> Unit) {
+    reactApplicationContext.runOnUiQueueThread(block)
+  }
+
+  private fun executeSafely(promise: Promise, errorCode: String, action: () -> Unit) {
     try {
-      val vibrationType = HapticsUtils.getImpactType(style)
-      vibrate(vibrationType)
-      promise.resolve(null)
+      action()
     } catch (e: IllegalArgumentException) {
-      promise.reject("E_INVALID_STYLE", e.message)
+      promise.reject(errorCode, e.message, e)
     } catch (e: Exception) {
       promise.reject("E_UNEXPECTED", "An unexpected error occurred: ${e.message}", e)
+    }
+  }
+
+  override fun impact(style: String, promise: Promise) {
+    executeSafely(promise, "E_INVALID_STYLE") {
+      val vibrationType = HapticsUtils.getImpactType(style)
+      runOnUiQueueThread {
+        vibrate(vibrationType)
+      }
+      promise.resolve(null)
     }
   }
 
   override fun notification(type: String, promise: Promise) {
-    try {
+    executeSafely(promise, "E_INVALID_TYPE") {
       val vibrationType = HapticsUtils.getNotificationType(type)
-      vibrate(vibrationType)
+      runOnUiQueueThread {
+        vibrate(vibrationType)
+      }
       promise.resolve(null)
-    } catch (e: IllegalArgumentException) {
-      promise.reject("E_INVALID_TYPE", e.message)
-    } catch (e: Exception) {
-      promise.reject("E_UNEXPECTED", "An unexpected error occurred: ${e.message}", e)
     }
   }
 
   override fun selection(promise: Promise) {
-    try {
-      vibrate(HapticsUtils.getSelectionType())
-      promise.resolve(null)
-    } catch (e: Exception) {
-      promise.reject("E_UNEXPECTED", "An unexpected error occurred: ${e.message}", e)
+    val vibrationType = HapticsUtils.getSelectionType()
+    runOnUiQueueThread {
+      vibrate(vibrationType)
     }
+    promise.resolve(null)
   }
 
   override fun androidHaptics(type: String, promise: Promise) {
-    try {
-      val view = currentActivity?.window?.decorView
-
-      if (view == null) {
-        promise.reject("E_NO_VIEW", "Could not get the current view.")
-        return
-      }
+    val view = currentActivity?.window?.decorView
+    if (view == null) {
+      promise.reject("E_NO_VIEW", "Could not get the current view.")
+      return
+    }
+    executeSafely(promise, "E_INVALID_TYPE") {
       val feedbackConstant = HapticsUtils.getAndroidHapticsType(type)
-
-      reactApplicationContext.runOnUiQueueThread {
+      runOnUiQueueThread {
         view.performHapticFeedback(feedbackConstant)
       }
       promise.resolve(null)
-    } catch (e: IllegalArgumentException) {
-      promise.reject("E_INVALID_TYPE", e.message)
-    } catch (e: Exception) {
-      promise.reject("E_HAPTIC_FEEDBACK", "An unexpected error occurred: ${e.message}", e)
     }
   }
 
@@ -87,13 +90,12 @@ class HapticsModule(reactContext: ReactApplicationContext) :
       return
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      if (vibrator?.hasAmplitudeControl() == true) {
-        val effect = VibrationEffect.createWaveform(type.timings, type.amplitudes, -1)
-        vibrator?.vibrate(effect)
+      val effect = if (vibrator?.hasAmplitudeControl() == true) {
+        VibrationEffect.createWaveform(type.timings, type.amplitudes, -1)
       } else {
-        val effect = VibrationEffect.createWaveform(type.timings, -1)
-        vibrator?.vibrate(effect)
+        VibrationEffect.createWaveform(type.timings, -1)
       }
+      vibrator?.vibrate(effect)
     } else {
       @Suppress("DEPRECATION")
       vibrator?.vibrate(type.oldFallback, -1)
