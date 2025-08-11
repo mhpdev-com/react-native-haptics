@@ -69,6 +69,23 @@ For Expo projects, follow these steps:
 
 To learn how to use the library, check out the [usage section](./docs/USAGE.md).
 
+## Benchmarks (RN Haptics vs Expo Haptics)
+
+The following benchmark results are for 200 time executions ([Click here to see the full report repository](https://github.com/Mhp23/RN-Haptics-Benchmarks)):
+
+#### How much faster on iOS (iPhone 14 Pro Max)?
+
+- Impact Heavy: React Native Haptics is **~2.13x faster** than Expo Haptics ($0.779 / 0.365 \approx 2.13$)
+- Notification Success: React Native Haptics is **~3.78x faster** than Expo Haptics ($1.378 / 0.365 \approx 3.78$)
+- Selection: React Native Haptics is **~1.72x faster** than Expo Haptics ($0.602 / 0.350 \approx 1.72$)
+
+#### How much faster on Android (Samsung A55)?
+
+- Impact Heavy: React Native Haptics is **~3.36x faster** than Expo Haptics ($9.766 / 2.902 \approx 3.36$)
+- Notification Success: React Native Haptics is **~3.16x faster** than Expo Haptics ($10.837 / 3.433 \approx 3.16$)
+- Selection: React Native Haptics is **~3.70x faster** than Expo Haptics ($11.236 / 3.037 \approx 3.70$)
+- Android Haptics: Expo Haptics is **~1.72x faster** than its React Native Haptics counterpart ($3.238 / 1.879 \approx 1.72$)
+
 ## Quick Start
 
 ```tsx
