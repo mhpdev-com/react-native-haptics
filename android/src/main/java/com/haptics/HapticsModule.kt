@@ -4,7 +4,8 @@ import android.content.Context
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibrationEffect
-import com.haptics.HapticsVibrationType
+import android.media.AudioAttributes
+import android.os.VibrationAttributes
 import android.view.HapticFeedbackConstants
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -21,6 +22,21 @@ class HapticsModule(reactContext: ReactApplicationContext) :
     } else {
       @Suppress("DEPRECATION")
       reactContext.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+    }
+  }
+
+  private val audioAttributes: AudioAttributes by lazy {
+    AudioAttributes.Builder()
+      .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+      .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+      .build()
+  }
+
+  private val vibrationAttributes: Any? by lazy {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      VibrationAttributes.createForUsage(VibrationAttributes.USAGE_TOUCH)
+    } else {
+      null
     }
   }
 
@@ -95,10 +111,19 @@ class HapticsModule(reactContext: ReactApplicationContext) :
       } else {
         VibrationEffect.createWaveform(type.timings, -1)
       }
-      vibrator?.vibrate(effect)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && vibrationAttributes != null) {
+        vibrator?.vibrate(effect, vibrationAttributes as VibrationAttributes)
+      } else {
+        vibrator?.vibrate(effect, audioAttributes)
+      }
     } else {
-      @Suppress("DEPRECATION")
-      vibrator?.vibrate(type.oldFallback, -1)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        @Suppress("DEPRECATION")
+        vibrator?.vibrate(type.oldFallback, -1, audioAttributes)
+      } else {
+        @Suppress("DEPRECATION")
+        vibrator?.vibrate(type.oldFallback, -1)
+      }
     }
   }
 
