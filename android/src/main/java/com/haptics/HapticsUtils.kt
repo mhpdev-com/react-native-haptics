@@ -1,7 +1,6 @@
 package com.haptics
 
 import android.os.Build
-import com.haptics.HapticsVibrationType
 import android.view.HapticFeedbackConstants
 
 object HapticsUtils {
@@ -9,47 +8,47 @@ object HapticsUtils {
 
   private val notificationTypes = mapOf(
     "success" to HapticsVibrationType(
-      timings = longArrayOf(0, 25, 80, 35),
-      amplitudes = intArrayOf(0, 120, 0, 180),
-      oldFallback = longArrayOf(0, 25, 80, 35)
+      timings = longArrayOf(0, 40, 100, 50),
+      amplitudes = intArrayOf(0, 140, 0, 200),
+      oldFallback = longArrayOf(0, 40, 100, 50)
     ),
     "warning" to HapticsVibrationType(
-      timings = longArrayOf(0, 20, 100, 50),
-      amplitudes = intArrayOf(0, 200, 0, 255),
-      oldFallback = longArrayOf(0, 20, 100, 50)
+      timings = longArrayOf(0, 45, 120, 60),
+      amplitudes = intArrayOf(0, 180, 0, 255),
+      oldFallback = longArrayOf(0, 45, 120, 60)
     ),
     "error" to HapticsVibrationType(
-      timings = longArrayOf(0, 20, 50, 20, 50, 20),
-      amplitudes = intArrayOf(0, 150, 0, 200, 0, 255),
-      oldFallback = longArrayOf(0, 20, 50, 20, 50, 20)
+      timings = longArrayOf(0, 40, 70, 40, 70, 45),
+      amplitudes = intArrayOf(0, 160, 0, 200, 0, 255),
+      oldFallback = longArrayOf(0, 40, 70, 40, 70, 45)
     )
   )
 
   private val impactTypes = mapOf(
     "light" to HapticsVibrationType(
-      timings = longArrayOf(0, 20),
-      amplitudes = intArrayOf(0, 110),
-      oldFallback = longArrayOf(0, 20)
+      timings = longArrayOf(0, 35),
+      amplitudes = intArrayOf(0, 130),
+      oldFallback = longArrayOf(0, 35)
     ),
     "soft" to HapticsVibrationType(
-      timings = longArrayOf(0, 50),
-      amplitudes = intArrayOf(0, 100),
-      oldFallback = longArrayOf(0, 50)
+      timings = longArrayOf(0, 20, 0, 45),
+      amplitudes = intArrayOf(0, 80, 0, 140),
+      oldFallback = longArrayOf(0, 65)
     ),
     "medium" to HapticsVibrationType(
-      timings = longArrayOf(0, 40),
+      timings = longArrayOf(0, 45),
       amplitudes = intArrayOf(0, 180),
-      oldFallback = longArrayOf(0, 40)
+      oldFallback = longArrayOf(0, 45)
     ),
     "rigid" to HapticsVibrationType(
-      timings = longArrayOf(0, 30),
-      amplitudes = intArrayOf(0, 220),
-      oldFallback = longArrayOf(0, 30)
+      timings = longArrayOf(0, 35),
+      amplitudes = intArrayOf(0, 240),
+      oldFallback = longArrayOf(0, 35)
     ),
     "heavy" to HapticsVibrationType(
-      timings = longArrayOf(0, 60),
-      amplitudes = intArrayOf(0, 255),
-      oldFallback = longArrayOf(0, 60)
+      timings = longArrayOf(0, 50, 0, 35),
+      amplitudes = intArrayOf(0, 255, 0, 180),
+      oldFallback = longArrayOf(0, 85)
     )
   )
 
@@ -85,12 +84,12 @@ object HapticsUtils {
 
   fun getSelectionType(): HapticsVibrationType =
     HapticsVibrationType(
-      timings = longArrayOf(0, 10),
-      amplitudes = intArrayOf(0, 90),
-      oldFallback = longArrayOf(0, 10)
+      timings = longArrayOf(0, 35),
+      amplitudes = intArrayOf(0, 110),
+      oldFallback = longArrayOf(0, 35)
     )
 
-   fun getAndroidHapticsType(type: String): Int {
+  fun getAndroidHapticsType(type: String): Int {
     val hapticInfo = ALL_HAPTIC_TYPES[type]
       ?: throw IllegalArgumentException(
         "'type' must be one of ${ALL_HAPTIC_TYPES.keys.joinToString()}. Obtained '$type'."
