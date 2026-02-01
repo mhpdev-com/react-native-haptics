@@ -4,12 +4,12 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  SafeAreaView,
   type TextStyle,
   useColorScheme,
 } from 'react-native';
 import Haptics from '@mhpdev/react-native-haptics';
 import HapticButton from './components/HapticButton';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {AndroidHaptics, Impacts, Notifications} from './core/config';
 
 export default function App() {
