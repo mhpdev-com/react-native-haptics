@@ -32,7 +32,7 @@ class HapticsModule(reactContext: ReactApplicationContext) :
       .build()
   }
 
-  private val vibrationAttributes: Any? by lazy {
+  private val vibrationAttributes: VibrationAttributes? by lazy {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
       VibrationAttributes.createForUsage(VibrationAttributes.USAGE_TOUCH)
     } else {
@@ -102,7 +102,8 @@ class HapticsModule(reactContext: ReactApplicationContext) :
   }
 
   private fun vibrate(type: HapticsVibrationType) {
-    if (vibrator?.hasVibrator() == false) {
+    val vibrator = this.vibrator ?: return
+    if (!vibrator.hasVibrator()) {
       return
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -117,13 +118,8 @@ class HapticsModule(reactContext: ReactApplicationContext) :
         vibrator?.vibrate(effect, audioAttributes)
       }
     } else {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        @Suppress("DEPRECATION")
-        vibrator?.vibrate(type.oldFallback, -1, audioAttributes)
-      } else {
-        @Suppress("DEPRECATION")
-        vibrator?.vibrate(type.oldFallback, -1)
-      }
+      @Suppress("DEPRECATION")
+      vibrator?.vibrate(type.oldFallback, -1, audioAttributes)
     }
   }
 
