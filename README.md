@@ -75,16 +75,20 @@ The following benchmark results are for 200 time executions ([Click here to see 
 
 #### How much faster on iOS (iPhone 14 Pro Max)?
 
-- Impact Heavy: React Native Haptics is **~2.13x faster** than Expo Haptics ($0.779 / 0.365 \approx 2.13$)
-- Notification Success: React Native Haptics is **~3.78x faster** than Expo Haptics ($1.378 / 0.365 \approx 3.78$)
-- Selection: React Native Haptics is **~1.72x faster** than Expo Haptics ($0.602 / 0.350 \approx 1.72$)
+| Effect               | React Native Haptics | Expo Haptics |   Speedup (RN / Expo) |
+| -------------------- | -------------------: | -----------: | --------------------: |
+| Impact Heavy         |                0.779 |        0.365 | 0.779 / 0.365 ≈ 2.13x |
+| Notification Success |                1.378 |        0.365 | 1.378 / 0.365 ≈ 3.78x |
+| Selection            |                0.602 |        0.350 | 0.602 / 0.350 ≈ 1.72x |
 
 #### How much faster on Android (Samsung A55)?
 
-- Impact Heavy: React Native Haptics is **~3.36x faster** than Expo Haptics ($9.766 / 2.902 \approx 3.36$)
-- Notification Success: React Native Haptics is **~3.16x faster** than Expo Haptics ($10.837 / 3.433 \approx 3.16$)
-- Selection: React Native Haptics is **~3.70x faster** than Expo Haptics ($11.236 / 3.037 \approx 3.70$)
-- Android Haptics: Expo Haptics is **~1.72x faster** than its React Native Haptics counterpart ($3.238 / 1.879 \approx 1.72$)
+| Effect               | React Native Haptics | Expo Haptics |                    Speedup (RN / Expo) |
+| -------------------- | -------------------: | -----------: | -------------------------------------: |
+| Impact Heavy         |                9.766 |        2.902 |                  9.766 / 2.902 ≈ 3.37x |
+| Notification Success |               10.837 |        3.433 |                 10.837 / 3.433 ≈ 3.16x |
+| Selection            |               11.236 |        3.037 |                 11.236 / 3.037 ≈ 3.70x |
+| Android Haptics      |                1.879 |        3.238 | 3.238 / 1.879 ≈ 1.72x (Expo is faster) |
 
 ## Quick Start
 
