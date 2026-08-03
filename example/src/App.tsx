@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import Haptics from '@mhpdev/react-native-haptics';
 import HapticButton from './components/HapticButton';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {AndroidHaptics, Impacts, Notifications} from './core/config';
 
-export default function App() {
+const AppContent: React.FC = () => {
   const scheme = useColorScheme();
 
   const titleStyle = React.useMemo<TextStyle>(() => {
@@ -27,7 +27,7 @@ export default function App() {
   }, [scheme]);
 
   return (
-    <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar
         barStyle={scheme === 'dark' ? 'light-content' : 'dark-content'}
       />
@@ -68,7 +68,17 @@ export default function App() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+const App: React.FC = () => {
+  return (
+    <SafeAreaProvider>
+      <AppContent />
+    </SafeAreaProvider>
+  );
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
