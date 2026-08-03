@@ -305,8 +305,8 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = haptics.example;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				PRODUCT_NAME = HapticsExample;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
