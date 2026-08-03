@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Text,
   Platform,
+  StatusBar,
   ScrollView,
   StyleSheet,
   type TextStyle,
@@ -26,7 +27,10 @@ export default function App() {
   }, [scheme]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
+      <StatusBar
+        barStyle={scheme === 'dark' ? 'light-content' : 'dark-content'}
+      />
       <Text style={titleStyle}>React Native Haptics Examples</Text>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -69,7 +73,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 30,
+    paddingVertical: 5,
   },
   content: {
     marginTop: 10,
