@@ -87,7 +87,7 @@ class HapticsModule(reactContext: ReactApplicationContext) :
   }
 
   override fun androidHaptics(type: String, promise: Promise) {
-    val view = currentActivity?.window?.decorView
+    val view = reactApplicationContext.currentActivity?.window?.decorView
     if (view == null) {
       promise.reject("E_NO_VIEW", "Could not get the current view.")
       return
